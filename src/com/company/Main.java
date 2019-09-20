@@ -5,20 +5,33 @@ import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader filereader = new BufferedReader(new FileReader("src\\com\\company\\test"));
+    public static void main(String[] args) {
+        String filename;
         String str = "";
         ArrayList<String> list = new ArrayList<String>();
-        while (filereader.ready()) {
-            int x = filereader.read();
-            if ((x > 96 && x < 123) || (x > 64 && x < 91))
-                str += Character.toString((char) x);
-            else {
-                if (str.length() > 0) list.add(str);
-                str = "";
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            filename = reader.readLine();
+            reader.close();
+            BufferedReader filereader = new BufferedReader(new FileReader(filename));
+            while (filereader.ready()) {
+                int x = filereader.read();
+                if ((x > 96 && x < 123) || (x > 64 && x < 91))
+                    str += Character.toString((char) x);
+                else {
+                    if (str.length() > 0) list.add(str);
+                    str = "";
+                }
             }
+            if (str.length() > 0) list.add(str);
+            filereader.close();
         }
-        if (str.length() > 0) list.add(str);
+        catch (FileNotFoundException e) {
+            System.out.println("Файл не найден");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
         TreeMap<String, Integer> map = new TreeMap<String, Integer>();
         for (String s : list) {
